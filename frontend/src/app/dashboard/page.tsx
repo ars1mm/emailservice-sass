@@ -17,7 +17,6 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/auth'
 import { api } from '@/lib/api'
-import Navbar from '@/components/Navbar'
 
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth()
@@ -55,12 +54,11 @@ export default function DashboardPage() {
 
   return (
     <Box minH="100vh" bg="gray.50">
-      <Navbar />
-      <Container maxW="6xl" py={8}>
-        <Heading size="lg" mb={2}>
+      <Container maxW="6xl" py={8} pt={24}>
+        <Heading size={{ base: 'md', md: 'lg' }} mb={2}>
           Welcome back, {user.name} 👋
         </Heading>
-        <Text color="gray.500" mb={8}>
+        <Text color="gray.500" mb={8} fontSize={{ base: 'sm', md: 'md' }}>
           Here&apos;s your overview.
         </Text>
 
@@ -99,6 +97,7 @@ export default function DashboardPage() {
                 <Button
                   colorScheme="brand"
                   onClick={() => router.push('/teams')}
+                  size={{ base: 'sm', md: 'md' }}
                 >
                   Create your first team
                 </Button>

@@ -11,7 +11,8 @@ import {
 } from '@chakra-ui/react'
 import { motion, useAnimation } from 'framer-motion'
 import { useEffect } from 'react'
-import { MdSecurity, MdSpeed, MdGroupWork, MdAnalytics } from 'react-icons/md'
+import { MdSecurity, MdSpeed, MdGroupWork, MdAnalytics, MdNotifications, MdIntegrationInstructions, MdAutoAwesome, MdCloudSync } from 'react-icons/md'
+import Marquee from 'react-fast-marquee'
 
 const MotionVStack = motion(VStack)
 
@@ -40,6 +41,30 @@ const features = [
     icon: MdAnalytics,
     color: 'orange.400',
   },
+  {
+    title: 'Smart Notifications',
+    description: 'Get notified only when it matters. AI-powered alerts keep you focused on what needs your attention.',
+    icon: MdNotifications,
+    color: 'red.400',
+  },
+  {
+    title: 'Seamless Integrations',
+    description: 'Connect with Slack, Teams, Jira, and 100+ tools. Sync your workflow across all platforms effortlessly.',
+    icon: MdIntegrationInstructions,
+    color: 'cyan.400',
+  },
+  {
+    title: 'AI-Powered Insights',
+    description: 'Automatically categorize, prioritize, and summarize emails with cutting-edge machine learning.',
+    icon: MdAutoAwesome,
+    color: 'pink.400',
+  },
+  {
+    title: 'Cloud Sync',
+    description: 'Access your emails from anywhere. Real-time sync across all devices with offline support.',
+    icon: MdCloudSync,
+    color: 'teal.400',
+  },
 ]
 
 export default function Features() {
@@ -50,9 +75,9 @@ export default function Features() {
   }, [controls])
 
   return (
-    <Box py={{ base: 20, md: 32 }} id="features" position="relative">
-      <Container maxW="container.xl">
-        <VStack spacing={4} textAlign="center" mb={16}>
+    <Box py={{ base: 20, md: 32 }} id="features" position="relative" w="full">
+      <Container maxW="container.xl" mb={16}>
+        <VStack spacing={4} textAlign="center">
           <Text
             color="brand.400"
             fontWeight="bold"
@@ -68,71 +93,46 @@ export default function Features() {
             lineHeight="1.2"
           >
             Everything you need to <br/>
-            <Text as="span" color="whiteAlpha.700">scale your team</Text>
+            <Text as="span" bgGradient="linear(to-r, blue.400, purple.400)" bgClip="text">scale your team</Text>
           </Heading>
         </VStack>
-
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-          {features.map((feature, index) => (
-            <MotionVStack
-              key={index}
-              align="start"
-              p={10}
-              bg="whiteAlpha.50"
-              borderRadius="3xl"
-              border="1px solid"
-              borderColor="whiteAlpha.100"
-              spacing={4}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={{
-                hidden: { opacity: 0, y: 50 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { duration: 0.6, delay: index * 0.1 }
-                }
-              }}
-              _hover={{
-                bg: 'whiteAlpha.100',
-                transform: 'translateY(-4px)',
-                borderColor: 'whiteAlpha.300',
-                boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
-              }}
-              position="relative"
-              overflow="hidden"
-            >
-              <Box
-                position="absolute"
-                top="-50%"
-                right="-20%"
-                w="150px"
-                h="150px"
-                bg={feature.color}
-                filter="blur(100px)"
-                opacity={0.15}
-                borderRadius="full"
-              />
-              <Box
-                p={4}
-                borderRadius="2xl"
-                bg="whiteAlpha.100"
-                color={feature.color}
-                boxShadow="inset 0 2px 4px rgba(255,255,255,0.05)"
-              >
-                <Icon as={feature.icon} w={8} h={8} />
-              </Box>
-              <Heading size="md" fontWeight="bold">
-                {feature.title}
-              </Heading>
-              <Text color="whiteAlpha.600" fontSize="lg" lineHeight="1.6">
-                {feature.description}
-              </Text>
-            </MotionVStack>
-          ))}
-        </SimpleGrid>
       </Container>
+
+      <Box w="full" py={12} overflow="hidden">
+
+        <Marquee gradient={true} gradientColor="#1a202c" speed={50} pauseOnHover>
+          {features.map((feature, index) => (
+            <Box
+              key={index}
+              p={10}
+              bg="white"
+              borderRadius="2xl"
+              border="1px solid"
+              borderColor="gray.200"
+              w="450px"
+              h="320px"
+              mx={4}
+            >
+              <VStack align="start" spacing={5} h="full">
+                <Box
+                  p={3}
+                  borderRadius="xl"
+                  bg={feature.color}
+                  color="white"
+                >
+                  <Icon as={feature.icon} w={7} h={7} />
+                </Box>
+                <Heading size="lg" fontWeight="bold" color="gray.800">
+                  {feature.title}
+                </Heading>
+                <Text color="gray.600" fontSize="md" lineHeight="1.7">
+                  {feature.description}
+                </Text>
+              </VStack>
+            </Box>
+          ))}
+        </Marquee>
+      </Box>
     </Box>
   )
 }

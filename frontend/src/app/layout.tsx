@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Outfit } from 'next/font/google'
 import { Providers } from './providers'
 import { siteConfig } from '@/config/site'
+import Navbar from '@/components/Navbar'
 
 const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' })
 
@@ -18,7 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={outfit.variable}>
       <body style={{ backgroundColor: '#09090b', color: '#ededed' }}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   )

@@ -29,7 +29,6 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/auth'
 import { api } from '@/lib/api'
-import Navbar from '@/components/Navbar'
 
 export default function TeamsPage() {
   const { user, loading: authLoading } = useAuth()
@@ -90,11 +89,10 @@ export default function TeamsPage() {
 
   return (
     <Box minH="100vh" bg="gray.50">
-      <Navbar />
-      <Container maxW="6xl" py={8}>
-        <HStack justify="space-between" mb={6}>
-          <Heading size="lg">Teams</Heading>
-          <Button leftIcon={<AddIcon />} colorScheme="brand" onClick={onOpen}>
+      <Container maxW="6xl" py={8} pt={24}>
+        <HStack justify="space-between" mb={6} flexWrap="wrap" gap={3}>
+          <Heading size={{ base: 'md', md: 'lg' }}>Teams</Heading>
+          <Button leftIcon={<AddIcon />} colorScheme="brand" onClick={onOpen} size={{ base: 'sm', md: 'md' }}>
             New Team
           </Button>
         </HStack>
@@ -137,12 +135,12 @@ export default function TeamsPage() {
         )}
 
         {/* Create Team Modal */}
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} size={{ base: 'full', sm: 'md' }}>
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent mx={{ base: 0, sm: 4 }}>
             <ModalHeader>Create a Team</ModalHeader>
             <ModalCloseButton />
-            <ModalBody>
+            <ModalBody pb={6}>
               <VStack spacing={4}>
                 <FormControl isRequired>
                   <FormLabel>Team Name</FormLabel>

@@ -156,8 +156,8 @@ export default function TrustpilotReviews() {
                 p={8}
                 border="1px solid"
                 borderColor={borderColor}
-                w="350px"
-                minH="260px"
+                w="400px"
+                h="280px"
                 display="flex"
                 flexDirection="column"
                 transition="all 0.3s"
@@ -173,7 +173,7 @@ export default function TrustpilotReviews() {
                 </Text>
 
                 <HStack spacing={4} mt="auto">
-                  <Avatar src={review.avatar} name={review.name} size="md" />
+                  <Avatar name={review.name} size="md" bg="white" color="gray.800" />
                   <VStack align="start" spacing={0}>
                     <Text fontWeight="bold" color="white">{review.name}</Text>
                     <Text fontSize="sm" color="whiteAlpha.500">{review.role}</Text>

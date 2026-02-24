@@ -20,10 +20,7 @@ const MotionBox = motion(Box)
 const MotionVStack = motion(VStack)
 
 export default function Hero() {
-  const gradientText = useColorModeValue(
-    'linear(to-r, brand.400, purple.400)',
-    'linear(to-r, brand.300, purple.300)'
-  )
+
 
   return (
     <Box position="relative" overflow="hidden" pt={{ base: 32, md: 40 }} pb={{ base: 20, md: 32 }}>
@@ -51,7 +48,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <Box
+          {/* <Box
             px={4}
             py={1}
             borderRadius="full"
@@ -63,17 +60,25 @@ export default function Hero() {
             fontWeight="medium"
           >
             Introducing the new standard for email collaboration
-          </Box>
+          </Box> */}
 
           <Heading
             as="h1"
             fontSize="clamp(2.5rem, 6vw, 5rem)"
             fontWeight="extrabold"
             letterSpacing="tight"
-            lineHeight="1.1"
+            lineHeight="1"
           >
             Share emails with your <br />
-            <Text as="span" bgGradient={gradientText} bgClip="text">
+            <Text 
+              as="span" 
+              bgGradient="linear(to-r, #00D4FF, #0080FF, #0040FF)"
+              bgClip="text"
+              sx={{
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
               entire team, instantly.
             </Text>
           </Heading>
@@ -85,7 +90,7 @@ export default function Hero() {
           <HStack spacing={4} pt={4}>
             <Button
               as="a"
-              href={`${siteConfig.dashboardUrl}/register`}
+              href={`${siteConfig.dashboardUrl}/login`}
               size="lg"
               colorScheme="brand"
               rightIcon={<MdArrowForward />}
@@ -101,7 +106,7 @@ export default function Hero() {
             </Button>
             <Button
               as="a"
-              href="#demo"
+              href="#pricing"
               size="lg"
               variant="outline"
               colorScheme="whiteAlpha"
@@ -110,7 +115,7 @@ export default function Hero() {
               _hover={{ bg: 'whiteAlpha.100', transform: 'translateY(-2px)' }}
               transition="all 0.2s"
             >
-              Book a demo
+              View Pricing
             </Button>
           </HStack>
         </MotionVStack>

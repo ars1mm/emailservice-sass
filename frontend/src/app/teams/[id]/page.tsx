@@ -28,7 +28,6 @@ import { useEffect, useState, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useAuth } from '@/lib/auth'
 import { api } from '@/lib/api'
-import Navbar from '@/components/Navbar'
 import EmailCard from '@/components/EmailCard'
 import ShareEmailModal from '@/components/ShareEmailModal'
 
@@ -127,21 +126,22 @@ export default function TeamDetailPage() {
 
   return (
     <Box minH="100vh" bg="gray.50">
-      <Navbar />
-      <Container maxW="6xl" py={8}>
+      <Container maxW="6xl" py={8} pt={24}>
         {/* Team Header */}
-        <HStack justify="space-between" mb={2}>
-          <Box>
-            <Heading size="lg">{team.name}</Heading>
-            <Text color="gray.500">{team.description}</Text>
-          </Box>
-          <Button leftIcon={<AddIcon />} colorScheme="brand" onClick={onOpen}>
-            Share Email
-          </Button>
-        </HStack>
+        <VStack align="stretch" spacing={4} mb={6}>
+          <HStack justify="space-between" flexWrap="wrap" gap={3}>
+            <Box flex="1" minW="200px">
+              <Heading size={{ base: 'md', md: 'lg' }}>{team.name}</Heading>
+              <Text color="gray.500" fontSize={{ base: 'sm', md: 'md' }}>{team.description}</Text>
+            </Box>
+            <Button leftIcon={<AddIcon />} colorScheme="brand" onClick={onOpen} size={{ base: 'sm', md: 'md' }}>
+              Share Email
+            </Button>
+          </HStack>
+        </VStack>
 
         {/* Members */}
-        <Box bg="white" p={5} rounded="xl" shadow="sm" mb={6} mt={4}>
+        <Box bg="white" p={{ base: 4, md: 5 }} rounded="xl" shadow="sm" mb={6}>
           <Heading size="sm" mb={3}>
             Members ({team.members?.length ?? 0})
           </Heading>
@@ -156,31 +156,31 @@ export default function TeamDetailPage() {
             ))}
           </Wrap>
           {team.owner_id === user.id && (
-            <HStack>
+            <VStack align="stretch" spacing={2}>
               <Input
                 size="sm"
                 placeholder="Add member by email"
                 value={memberEmail}
                 onChange={(e) => setMemberEmail(e.target.value)}
-                maxW="300px"
               />
               <Button
                 size="sm"
                 colorScheme="brand"
                 isLoading={addingMember}
                 onClick={handleAddMember}
+                w={{ base: 'full', sm: 'auto' }}
               >
-                Add
+                Add Member
               </Button>
-            </HStack>
+            </VStack>
           )}
         </Box>
 
         <Divider mb={6} />
 
         {/* Filters */}
-        <HStack mb={6} flexWrap="wrap" spacing={3}>
-          <InputGroup maxW="300px" size="sm">
+        <VStack align="stretch" spacing={3} mb={6}>
+          <InputGroup size="sm">
             <InputLeftElement>
               <SearchIcon color="gray.400" />
             </InputLeftElement>
@@ -205,7 +205,7 @@ export default function TeamDetailPage() {
               </WrapItem>
             ))}
           </Wrap>
-        </HStack>
+        </VStack>
 
         {/* Emails */}
         {loading ? (
