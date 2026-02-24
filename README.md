@@ -4,12 +4,12 @@ A simple SaaS to share important emails across teams (engineering, product, desi
 
 ## Architecture
 
-| Layer    | Stack                          |
-| -------- | ------------------------------ |
-| Frontend | Next.js 14 + Chakra UI         |
-| Backend  | Python / FastAPI + SQLAlchemy  |
+| Layer    | Stack                            |
+| -------- | -------------------------------- |
+| Frontend | Next.js 14 + Chakra UI           |
+| Backend  | Python / FastAPI + SQLAlchemy    |
 | Database | SQLite (swap to Postgres easily) |
-| Auth     | JWT (Bearer tokens)            |
+| Auth     | JWT (Bearer tokens)              |
 
 ## Quick Start
 
@@ -45,18 +45,18 @@ App runs on **http://localhost:3000**. API calls are proxied to the backend via 
 
 ## API Endpoints
 
-| Method | Path                              | Description            |
-| ------ | --------------------------------- | ---------------------- |
-| POST   | `/api/auth/register`              | Create account         |
-| POST   | `/api/auth/login`                 | Get JWT token          |
-| GET    | `/api/auth/me`                    | Current user           |
-| GET    | `/api/teams/`                     | List user's teams      |
-| POST   | `/api/teams/`                     | Create team            |
-| GET    | `/api/teams/:id`                  | Team details           |
-| POST   | `/api/teams/:id/members`          | Add member             |
-| DELETE | `/api/teams/:id/members/:userId`  | Remove member          |
-| DELETE | `/api/teams/:id`                  | Delete team            |
-| POST   | `/api/emails/`                    | Share an email         |
-| GET    | `/api/emails/team/:teamId`        | List team emails       |
-| GET    | `/api/emails/:id`                 | Get single email       |
-| DELETE | `/api/emails/:id`                 | Delete shared email    |
+| Method | Path                             | Description         |
+| ------ | -------------------------------- | ------------------- |
+| POST   | `/api/auth/register`             | Create account      |
+| POST   | `/api/auth/login`                | Get JWT token       |
+| GET    | `/api/auth/me`                   | Current user        |
+| GET    | `/api/teams/`                    | List user's teams   |
+| POST   | `/api/teams/`                    | Create team         |
+| GET    | `/api/teams/:id`                 | Team details        |
+| POST   | `/api/teams/:id/members`         | Add member          |
+| DELETE | `/api/teams/:id/members/:userId` | Remove member       |
+| DELETE | `/api/teams/:id`                 | Delete team         |
+| POST   | `/api/emails/`                   | Share an email      |
+| GET    | `/api/emails/team/:teamId`       | List team emails    |
+| GET    | `/api/emails/:id`                | Get single email    |
+| DELETE | `/api/emails/:id`                | Delete shared email |

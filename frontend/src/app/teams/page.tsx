@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Box,
@@ -23,64 +23,69 @@ import {
   useDisclosure,
   useToast,
   VStack,
-} from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth";
-import { api } from "@/lib/api";
-import Navbar from "@/components/Navbar";
+} from '@chakra-ui/react'
+import { AddIcon } from '@chakra-ui/icons'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/lib/auth'
+import { api } from '@/lib/api'
+import Navbar from '@/components/Navbar'
 
 export default function TeamsPage() {
-  const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
-  const toast = useToast();
+  const { user, loading: authLoading } = useAuth()
+  const router = useRouter()
+  const toast = useToast()
 
-  const [teams, setTeams] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [newName, setNewName] = useState("");
-  const [newDesc, setNewDesc] = useState("");
-  const [creating, setCreating] = useState(false);
+  const [teams, setTeams] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [newName, setNewName] = useState('')
+  const [newDesc, setNewDesc] = useState('')
+  const [creating, setCreating] = useState(false)
 
   useEffect(() => {
-    if (!authLoading && !user) router.replace("/login");
-  }, [user, authLoading, router]);
+    if (!authLoading && !user) router.replace('/login')
+  }, [user, authLoading, router])
 
   const fetchTeams = () => {
     api
       .getTeams()
       .then(setTeams)
-      .finally(() => setLoading(false));
-  };
+      .finally(() => setLoading(false))
+  }
 
   useEffect(() => {
-    if (user) fetchTeams();
-  }, [user]);
+    if (user) fetchTeams()
+  }, [user])
 
   const handleCreate = async () => {
-    if (!newName.trim()) return;
-    setCreating(true);
+    if (!newName.trim()) return
+    setCreating(true)
     try {
-      await api.createTeam({ name: newName, description: newDesc });
-      toast({ title: "Team created!", status: "success" });
-      setNewName("");
-      setNewDesc("");
-      onClose();
-      fetchTeams();
+      await api.createTeam({ name: newName, description: newDesc })
+      toast({ title: 'Team created!', status: 'success' })
+      setNewName('')
+      setNewDesc('')
+      onClose()
+      fetchTeams()
     } catch (e: any) {
-      toast({ title: e.message, status: "error" });
+      toast({ title: e.message, status: 'error' })
     } finally {
-      setCreating(false);
+      setCreating(false)
     }
-  };
+  }
 
   if (authLoading || !user) {
     return (
-      <Box minH="100vh" display="flex" alignItems="center" justifyContent="center">
+      <Box
+        minH="100vh"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Spinner size="xl" />
       </Box>
-    );
+    )
   }
 
   return (
@@ -89,11 +94,7 @@ export default function TeamsPage() {
       <Container maxW="6xl" py={8}>
         <HStack justify="space-between" mb={6}>
           <Heading size="lg">Teams</Heading>
-          <Button
-            leftIcon={<AddIcon />}
-            colorScheme="brand"
-            onClick={onOpen}
-          >
+          <Button leftIcon={<AddIcon />} colorScheme="brand" onClick={onOpen}>
             New Team
           </Button>
         </HStack>
@@ -116,7 +117,7 @@ export default function TeamsPage() {
                 rounded="xl"
                 shadow="sm"
                 cursor="pointer"
-                _hover={{ shadow: "md", borderColor: "brand.200" }}
+                _hover={{ shadow: 'md', borderColor: 'brand.200' }}
                 borderWidth="1px"
                 onClick={() => router.push(`/teams/${t.id}`)}
               >
@@ -124,10 +125,10 @@ export default function TeamsPage() {
                   {t.name}
                 </Heading>
                 <Text fontSize="sm" color="gray.500">
-                  {t.description || "No description"}
+                  {t.description || 'No description'}
                 </Text>
                 <Text fontSize="xs" color="gray.400" mt={3}>
-                  {t.members?.length ?? 0} members · Created{" "}
+                  {t.members?.length ?? 0} members · Created{' '}
                   {new Date(t.created_at).toLocaleDateString()}
                 </Text>
               </Box>
@@ -177,5 +178,5 @@ export default function TeamsPage() {
         </Modal>
       </Container>
     </Box>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Box,
@@ -12,40 +12,45 @@ import {
   Spinner,
   VStack,
   Button,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth";
-import { api } from "@/lib/api";
-import Navbar from "@/components/Navbar";
+} from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/lib/auth'
+import { api } from '@/lib/api'
+import Navbar from '@/components/Navbar'
 
 export default function DashboardPage() {
-  const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
-  const [teams, setTeams] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { user, loading: authLoading } = useAuth()
+  const router = useRouter()
+  const [teams, setTeams] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.replace("/login");
+      router.replace('/login')
     }
-  }, [user, authLoading, router]);
+  }, [user, authLoading, router])
 
   useEffect(() => {
     if (user) {
       api
         .getTeams()
         .then(setTeams)
-        .finally(() => setLoading(false));
+        .finally(() => setLoading(false))
     }
-  }, [user]);
+  }, [user])
 
   if (authLoading || !user) {
     return (
-      <Box minH="100vh" display="flex" alignItems="center" justifyContent="center">
+      <Box
+        minH="100vh"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Spinner size="xl" />
       </Box>
-    );
+    )
   }
 
   return (
@@ -78,7 +83,7 @@ export default function DashboardPage() {
                   mt={2}
                   size="sm"
                   colorScheme="brand"
-                  onClick={() => router.push("/teams")}
+                  onClick={() => router.push('/teams')}
                 >
                   Go to Teams →
                 </Button>
@@ -93,7 +98,7 @@ export default function DashboardPage() {
                 <Text color="gray.400">No teams yet.</Text>
                 <Button
                   colorScheme="brand"
-                  onClick={() => router.push("/teams")}
+                  onClick={() => router.push('/teams')}
                 >
                   Create your first team
                 </Button>
@@ -108,12 +113,12 @@ export default function DashboardPage() {
                     rounded="xl"
                     shadow="sm"
                     cursor="pointer"
-                    _hover={{ shadow: "md" }}
+                    _hover={{ shadow: 'md' }}
                     onClick={() => router.push(`/teams/${t.id}`)}
                   >
                     <Heading size="sm">{t.name}</Heading>
                     <Text fontSize="sm" color="gray.500" mt={1}>
-                      {t.description || "No description"}
+                      {t.description || 'No description'}
                     </Text>
                     <Text fontSize="xs" color="gray.400" mt={2}>
                       {t.members?.length ?? 0} members
@@ -126,5 +131,5 @@ export default function DashboardPage() {
         )}
       </Container>
     </Box>
-  );
+  )
 }

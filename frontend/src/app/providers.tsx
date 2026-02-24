@@ -1,34 +1,42 @@
-"use client";
+'use client'
 
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import { AuthProvider } from "@/lib/auth";
+import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { AuthProvider } from '@/lib/auth'
 
 const theme = extendTheme({
-  config: { initialColorMode: "light", useSystemColorMode: false },
+  config: { initialColorMode: 'dark', useSystemColorMode: false },
+  styles: {
+    global: {
+      body: {
+        bg: '#09090b',
+        color: '#ededed',
+      },
+    },
+  },
   fonts: {
-    heading: `'Inter', sans-serif`,
-    body: `'Inter', sans-serif`,
+    heading: `'var(--font-outfit)', sans-serif`,
+    body: `'var(--font-outfit)', sans-serif`,
   },
   colors: {
     brand: {
-      50: "#e6f2ff",
-      100: "#b3d9ff",
-      200: "#80bfff",
-      300: "#4da6ff",
-      400: "#1a8cff",
-      500: "#0073e6",
-      600: "#005bb4",
-      700: "#004282",
-      800: "#002a50",
-      900: "#00111f",
+      50: '#e5f3ff',
+      100: '#cce7ff',
+      200: '#99d0ff',
+      300: '#66b8ff',
+      400: '#33a1ff',
+      500: '#008aff',
+      600: '#006ecc',
+      700: '#005399',
+      800: '#003766',
+      900: '#001c33',
     },
   },
-});
+})
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ChakraProvider theme={theme}>
       <AuthProvider>{children}</AuthProvider>
     </ChakraProvider>
-  );
+  )
 }

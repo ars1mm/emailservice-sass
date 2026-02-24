@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Modal,
@@ -16,18 +16,18 @@ import {
   Select,
   useToast,
   VStack,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import { api } from "@/lib/api";
+} from '@chakra-ui/react'
+import { useState } from 'react'
+import { api } from '@/lib/api'
 
 interface Props {
-  isOpen: boolean;
-  onClose: () => void;
-  teamId: string;
-  onSuccess: () => void;
+  isOpen: boolean
+  onClose: () => void
+  teamId: string
+  onSuccess: () => void
 }
 
-const TAGS = ["general", "urgent", "fyi", "action-required", "bug", "feature"];
+const TAGS = ['general', 'urgent', 'fyi', 'action-required', 'bug', 'feature']
 
 export default function ShareEmailModal({
   isOpen,
@@ -35,34 +35,34 @@ export default function ShareEmailModal({
   teamId,
   onSuccess,
 }: Props) {
-  const [subject, setSubject] = useState("");
-  const [sender, setSender] = useState("");
-  const [body, setBody] = useState("");
-  const [tag, setTag] = useState("general");
-  const [loading, setLoading] = useState(false);
-  const toast = useToast();
+  const [subject, setSubject] = useState('')
+  const [sender, setSender] = useState('')
+  const [body, setBody] = useState('')
+  const [tag, setTag] = useState('general')
+  const [loading, setLoading] = useState(false)
+  const toast = useToast()
 
   const handleSubmit = async () => {
     if (!subject || !sender || !body) {
-      toast({ title: "All fields are required", status: "warning" });
-      return;
+      toast({ title: 'All fields are required', status: 'warning' })
+      return
     }
-    setLoading(true);
+    setLoading(true)
     try {
-      await api.shareEmail({ subject, sender, body, tag, team_id: teamId });
-      toast({ title: "Email shared!", status: "success" });
-      setSubject("");
-      setSender("");
-      setBody("");
-      setTag("general");
-      onSuccess();
-      onClose();
+      await api.shareEmail({ subject, sender, body, tag, team_id: teamId })
+      toast({ title: 'Email shared!', status: 'success' })
+      setSubject('')
+      setSender('')
+      setBody('')
+      setTag('general')
+      onSuccess()
+      onClose()
     } catch (e: any) {
-      toast({ title: e.message, status: "error" });
+      toast({ title: e.message, status: 'error' })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
@@ -123,5 +123,5 @@ export default function ShareEmailModal({
         </ModalFooter>
       </ModalContent>
     </Modal>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Box,
@@ -12,33 +12,33 @@ import {
   Text,
   Link as ChakraLink,
   useToast,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth";
-import NextLink from "next/link";
+} from '@chakra-ui/react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/lib/auth'
+import NextLink from 'next/link'
 
 export default function RegisterPage() {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { register } = useAuth();
-  const router = useRouter();
-  const toast = useToast();
+  const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { register } = useAuth()
+  const router = useRouter()
+  const toast = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault()
+    setLoading(true)
     try {
-      await register(email, name, password);
-      router.push("/dashboard");
+      await register(email, name, password)
+      router.push('/dashboard')
     } catch (err: any) {
-      toast({ title: err.message, status: "error" });
+      toast({ title: err.message, status: 'error' })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <Box minH="100vh" bg="gray.50" display="flex" alignItems="center">
@@ -51,10 +51,7 @@ export default function RegisterPage() {
             <VStack spacing={4}>
               <FormControl isRequired>
                 <FormLabel>Name</FormLabel>
-                <Input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
+                <Input value={name} onChange={(e) => setName(e.target.value)} />
               </FormControl>
               <FormControl isRequired>
                 <FormLabel>Email</FormLabel>
@@ -83,7 +80,7 @@ export default function RegisterPage() {
             </VStack>
           </form>
           <Text mt={4} textAlign="center" fontSize="sm">
-            Already have an account?{" "}
+            Already have an account?{' '}
             <ChakraLink as={NextLink} href="/login" color="brand.500">
               Log In
             </ChakraLink>
@@ -91,5 +88,5 @@ export default function RegisterPage() {
         </Box>
       </Container>
     </Box>
-  );
+  )
 }

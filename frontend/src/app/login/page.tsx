@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Box,
@@ -12,32 +12,32 @@ import {
   Text,
   Link as ChakraLink,
   useToast,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth";
-import NextLink from "next/link";
+} from '@chakra-ui/react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/lib/auth'
+import NextLink from 'next/link'
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
-  const router = useRouter();
-  const toast = useToast();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { login } = useAuth()
+  const router = useRouter()
+  const toast = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault()
+    setLoading(true)
     try {
-      await login(email, password);
-      router.push("/dashboard");
+      await login(email, password)
+      router.push('/dashboard')
     } catch (err: any) {
-      toast({ title: err.message, status: "error" });
+      toast({ title: err.message, status: 'error' })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <Box minH="100vh" bg="gray.50" display="flex" alignItems="center">
@@ -75,7 +75,7 @@ export default function LoginPage() {
             </VStack>
           </form>
           <Text mt={4} textAlign="center" fontSize="sm">
-            Don&apos;t have an account?{" "}
+            Don&apos;t have an account?{' '}
             <ChakraLink as={NextLink} href="/register" color="brand.500">
               Register
             </ChakraLink>
@@ -83,5 +83,5 @@ export default function LoginPage() {
         </Box>
       </Container>
     </Box>
-  );
+  )
 }

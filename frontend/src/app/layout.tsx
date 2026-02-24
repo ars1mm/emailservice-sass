@@ -1,21 +1,25 @@
-import type { Metadata } from "next";
-import { Providers } from "./providers";
+import type { Metadata } from 'next'
+import { Outfit } from 'next/font/google'
+import { Providers } from './providers'
+import { siteConfig } from '@/config/site'
+
+const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' })
 
 export const metadata: Metadata = {
-  title: "EmailShare — Share emails with your team",
-  description: "A simple SaaS to share and organize emails across teams.",
-};
+  title: siteConfig.name,
+  description: siteConfig.description,
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className={outfit.variable}>
+      <body style={{ backgroundColor: '#09090b', color: '#ededed' }}>
         <Providers>{children}</Providers>
       </body>
     </html>
-  );
+  )
 }

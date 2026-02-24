@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Box,
@@ -8,41 +8,41 @@ import {
   HStack,
   IconButton,
   useColorModeValue,
-} from "@chakra-ui/react";
-import { DeleteIcon } from "@chakra-ui/icons";
+} from '@chakra-ui/react'
+import { DeleteIcon } from '@chakra-ui/icons'
 
 interface Props {
   email: {
-    id: string;
-    subject: string;
-    sender: string;
-    body: string;
-    tag: string;
-    created_at: string;
-    shared_by_user?: { name: string } | null;
-  };
-  onDelete?: (id: string) => void;
-  canDelete?: boolean;
+    id: string
+    subject: string
+    sender: string
+    body: string
+    tag: string
+    created_at: string
+    shared_by_user?: { name: string } | null
+  }
+  onDelete?: (id: string) => void
+  canDelete?: boolean
 }
 
 const tagColors: Record<string, string> = {
-  general: "gray",
-  urgent: "red",
-  fyi: "blue",
-  "action-required": "orange",
-  bug: "purple",
-  feature: "green",
-};
+  general: 'gray',
+  urgent: 'red',
+  fyi: 'blue',
+  'action-required': 'orange',
+  bug: 'purple',
+  feature: 'green',
+}
 
 export default function EmailCard({ email, onDelete, canDelete }: Props) {
-  const bg = useColorModeValue("white", "gray.700");
+  const bg = useColorModeValue('white', 'gray.700')
 
   return (
     <Box p={5} bg={bg} rounded="lg" shadow="sm" borderWidth="1px">
       <HStack justify="space-between" mb={2}>
         <HStack>
           <Heading size="sm">{email.subject}</Heading>
-          <Badge colorScheme={tagColors[email.tag] || "gray"}>
+          <Badge colorScheme={tagColors[email.tag] || 'gray'}>
             {email.tag}
           </Badge>
         </HStack>
@@ -58,13 +58,13 @@ export default function EmailCard({ email, onDelete, canDelete }: Props) {
         )}
       </HStack>
       <Text fontSize="sm" color="gray.500" mb={1}>
-        From: {email.sender} · Shared by{" "}
-        {email.shared_by_user?.name ?? "unknown"} ·{" "}
+        From: {email.sender} · Shared by{' '}
+        {email.shared_by_user?.name ?? 'unknown'} ·{' '}
         {new Date(email.created_at).toLocaleDateString()}
       </Text>
       <Text fontSize="sm" whiteSpace="pre-wrap" noOfLines={6}>
         {email.body}
       </Text>
     </Box>
-  );
+  )
 }

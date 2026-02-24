@@ -1,88 +1,112 @@
-"use client";
+'use client'
 
 import {
   Box,
   Flex,
   HStack,
   Button,
-  Heading,
-  Spacer,
-  Text,
-  Avatar,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  IconButton,
   useColorModeValue,
-} from "@chakra-ui/react";
-import { HamburgerIcon } from "@chakra-ui/icons";
-import { useAuth } from "@/lib/auth";
-import { useRouter } from "next/navigation";
+  Text,
+  Icon,
+} from '@chakra-ui/react'
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { siteConfig } from '@/config/site'
+import { MdEmail } from 'react-icons/md'
+
+const MotionBox = motion(Box)
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
-  const router = useRouter();
-  const bg = useColorModeValue("white", "gray.800");
+  const bg = useColorModeValue('rgba(255, 255, 255, 0.05)', 'rgba(9, 9, 11, 0.6)')
+  const borderColor = useColorModeValue('whiteAlpha.300', 'whiteAlpha.200')
 
   return (
-    <Box
-      as="nav"
-      bg={bg}
-      px={6}
-      py={3}
-      borderBottomWidth="1px"
-      position="sticky"
-      top={0}
-      zIndex={10}
-    >
-      <Flex align="center" maxW="7xl" mx="auto">
-        <Heading
-          size="md"
-          cursor="pointer"
-          onClick={() => router.push("/dashboard")}
-          color="brand.500"
+    <Box position="fixed" w="100%" zIndex={100} top={4}>
+      <Flex maxW="1200px" mx="auto" px={4} justify="center">
+        <MotionBox
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          bg={bg}
+          backdropFilter="blur(16px)"
+          w="100%"
+          maxW="800px"
+          px={6}
+          py={3}
+          borderRadius="full"
+          border="1px solid"
+          borderColor={borderColor}
+          boxShadow="0 4px 30px rgba(0, 0, 0, 0.1)"
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          📧 EmailShare
-        </Heading>
-        <Spacer />
-        {user && (
+          <HStack spacing={2} as={Link} href="/" _hover={{ opacity: 0.8 }} transition="opacity 0.2s">
+            <Icon as={MdEmail} w={6} h={6} color="brand.400" />
+            <Text fontWeight="bold" fontSize="lg" letterSpacing="tight">
+              {siteConfig.name}
+            </Text>
+          </HStack>
+
+          <HStack spacing={8} display={{ base: 'none', md: 'flex' }}>
+            {['Features', 'Pricing', 'Docs'].map((item) => (
+              <Box
+                key={item}
+                as="a"
+                href={`#${item.toLowerCase()}`}
+                fontSize="sm"
+                fontWeight="medium"
+                color="whiteAlpha.700"
+                _hover={{ color: 'white' }}
+                transition="all 0.2s"
+              >
+                {item}
+              </Box>
+            ))}
+          </HStack>
+
           <HStack spacing={4}>
             <Button
+              as="a"
+              href={`${siteConfig.dashboardUrl}/login`}
               variant="ghost"
+              colorScheme="whiteAlpha"
               size="sm"
-              onClick={() => router.push("/dashboard")}
+              borderRadius="full"
+              _hover={{ bg: 'whiteAlpha.200' }}
             >
-              Dashboard
+              Sign In
             </Button>
             <Button
-              variant="ghost"
+              as="a"
+              href={`${siteConfig.dashboardUrl}/register`}
+              colorScheme="brand"
               size="sm"
-              onClick={() => router.push("/teams")}
+              borderRadius="full"
+              px={6}
+              position="relative"
+              overflow="hidden"
+              sx={{
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: '-100%',
+                  w: '100%',
+                  h: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+                  transition: 'left 0.5s ease',
+                },
+                '&:hover::before': {
+                  left: '100%',
+                },
+              }}
             >
-              Teams
+              Get Started
             </Button>
-            <Menu>
-              <MenuButton>
-                <Avatar size="sm" name={user.name} />
-              </MenuButton>
-              <MenuList>
-                <MenuItem fontSize="sm" isDisabled>
-                  {user.email}
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    logout();
-                    router.push("/login");
-                  }}
-                >
-                  Logout
-                </MenuItem>
-              </MenuList>
-            </Menu>
           </HStack>
-        )}
+        </MotionBox>
       </Flex>
     </Box>
-  );
+  )
 }

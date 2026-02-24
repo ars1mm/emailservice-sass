@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Box,
@@ -22,91 +22,107 @@ import {
   Divider,
   InputGroup,
   InputLeftElement,
-} from "@chakra-ui/react";
-import { AddIcon, SearchIcon } from "@chakra-ui/icons";
-import { useEffect, useState, useCallback } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { useAuth } from "@/lib/auth";
-import { api } from "@/lib/api";
-import Navbar from "@/components/Navbar";
-import EmailCard from "@/components/EmailCard";
-import ShareEmailModal from "@/components/ShareEmailModal";
+} from '@chakra-ui/react'
+import { AddIcon, SearchIcon } from '@chakra-ui/icons'
+import { useEffect, useState, useCallback } from 'react'
+import { useRouter, useParams } from 'next/navigation'
+import { useAuth } from '@/lib/auth'
+import { api } from '@/lib/api'
+import Navbar from '@/components/Navbar'
+import EmailCard from '@/components/EmailCard'
+import ShareEmailModal from '@/components/ShareEmailModal'
 
-const TAGS = ["all", "general", "urgent", "fyi", "action-required", "bug", "feature"];
+const TAGS = [
+  'all',
+  'general',
+  'urgent',
+  'fyi',
+  'action-required',
+  'bug',
+  'feature',
+]
 
 export default function TeamDetailPage() {
-  const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
-  const params = useParams();
-  const teamId = params.id as string;
-  const toast = useToast();
+  const { user, loading: authLoading } = useAuth()
+  const router = useRouter()
+  const params = useParams()
+  const teamId = params.id as string
+  const toast = useToast()
 
-  const [team, setTeam] = useState<any>(null);
-  const [emails, setEmails] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedTag, setSelectedTag] = useState("all");
-  const [search, setSearch] = useState("");
+  const [team, setTeam] = useState<any>(null)
+  const [emails, setEmails] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [selectedTag, setSelectedTag] = useState('all')
+  const [search, setSearch] = useState('')
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   // Add member state
-  const [memberEmail, setMemberEmail] = useState("");
-  const [addingMember, setAddingMember] = useState(false);
+  const [memberEmail, setMemberEmail] = useState('')
+  const [addingMember, setAddingMember] = useState(false)
 
   useEffect(() => {
-    if (!authLoading && !user) router.replace("/login");
-  }, [user, authLoading, router]);
+    if (!authLoading && !user) router.replace('/login')
+  }, [user, authLoading, router])
 
   const fetchTeam = useCallback(() => {
-    api.getTeam(teamId).then(setTeam).catch(() => router.push("/teams"));
-  }, [teamId, router]);
+    api
+      .getTeam(teamId)
+      .then(setTeam)
+      .catch(() => router.push('/teams'))
+  }, [teamId, router])
 
   const fetchEmails = useCallback(() => {
-    const tag = selectedTag === "all" ? undefined : selectedTag;
+    const tag = selectedTag === 'all' ? undefined : selectedTag
     api
       .getTeamEmails(teamId, tag, search || undefined)
       .then(setEmails)
-      .finally(() => setLoading(false));
-  }, [teamId, selectedTag, search]);
+      .finally(() => setLoading(false))
+  }, [teamId, selectedTag, search])
 
   useEffect(() => {
     if (user) {
-      fetchTeam();
-      fetchEmails();
+      fetchTeam()
+      fetchEmails()
     }
-  }, [user, fetchTeam, fetchEmails]);
+  }, [user, fetchTeam, fetchEmails])
 
   const handleDeleteEmail = async (id: string) => {
     try {
-      await api.deleteEmail(id);
-      toast({ title: "Email deleted", status: "info" });
-      fetchEmails();
+      await api.deleteEmail(id)
+      toast({ title: 'Email deleted', status: 'info' })
+      fetchEmails()
     } catch (e: any) {
-      toast({ title: e.message, status: "error" });
+      toast({ title: e.message, status: 'error' })
     }
-  };
+  }
 
   const handleAddMember = async () => {
-    if (!memberEmail.trim()) return;
-    setAddingMember(true);
+    if (!memberEmail.trim()) return
+    setAddingMember(true)
     try {
-      await api.addMember(teamId, { email: memberEmail });
-      toast({ title: "Member added!", status: "success" });
-      setMemberEmail("");
-      fetchTeam();
+      await api.addMember(teamId, { email: memberEmail })
+      toast({ title: 'Member added!', status: 'success' })
+      setMemberEmail('')
+      fetchTeam()
     } catch (e: any) {
-      toast({ title: e.message, status: "error" });
+      toast({ title: e.message, status: 'error' })
     } finally {
-      setAddingMember(false);
+      setAddingMember(false)
     }
-  };
+  }
 
   if (authLoading || !user || !team) {
     return (
-      <Box minH="100vh" display="flex" alignItems="center" justifyContent="center">
+      <Box
+        minH="100vh"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Spinner size="xl" />
       </Box>
-    );
+    )
   }
 
   return (
@@ -119,11 +135,7 @@ export default function TeamDetailPage() {
             <Heading size="lg">{team.name}</Heading>
             <Text color="gray.500">{team.description}</Text>
           </Box>
-          <Button
-            leftIcon={<AddIcon />}
-            colorScheme="brand"
-            onClick={onOpen}
-          >
+          <Button leftIcon={<AddIcon />} colorScheme="brand" onClick={onOpen}>
             Share Email
           </Button>
         </HStack>
@@ -185,7 +197,7 @@ export default function TeamDetailPage() {
                 <Tag
                   size="md"
                   cursor="pointer"
-                  colorScheme={selectedTag === t ? "brand" : "gray"}
+                  colorScheme={selectedTag === t ? 'brand' : 'gray'}
                   onClick={() => setSelectedTag(t)}
                 >
                   {t}
@@ -228,5 +240,5 @@ export default function TeamDetailPage() {
         />
       </Container>
     </Box>
-  );
+  )
 }
