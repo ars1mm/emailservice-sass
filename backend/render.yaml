@@ -1,0 +1,38 @@
+services:
+  # Backend API
+  - type: web
+    name: emailshare-api
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: emailshare-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PADDLE_WEBHOOK_SECRET
+        sync: false
+      - key: PADDLE_API_KEY
+        sync: false
+
+  # Frontend
+  - type: web
+    name: emailshare-frontend
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://emailshare-api.onrender.com
+
+databases:
+  - name: emailshare-db
+    plan: free
+    databaseName: emailshare
+    user: emailshare
