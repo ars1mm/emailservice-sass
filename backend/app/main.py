@@ -21,6 +21,11 @@ app.include_router(checkout.router)
 app.include_router(paddle.router)
 
 
+@app.get("/")
+def root():
+    return {"message": "EmailShare API", "docs": "/docs"}
+
+
 @app.get("/api/health")
 def health():
     return {"status": "ok"}

@@ -11,6 +11,7 @@ class Settings(BaseSettings):
 
     # Paddle
     PADDLE_API_KEY: str = ""
+    PADDLE_API_URL: str = "https://sandbox-api.paddle.com"
     PADDLE_WEBHOOK_SECRET: str = ""
     PADDLE_STARTER_PRICE_ID: str = ""
     PADDLE_PRO_PRICE_ID: str = ""

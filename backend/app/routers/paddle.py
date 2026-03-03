@@ -82,7 +82,7 @@ def verify_paddle_webhook(request_body: bytes, signature: str) -> bool:
     return hmac.compare_digest(expected, h1)
 
 
-@router.post("/api/paddle/webhook")
+@router.post("/paddle/webhook")
 async def paddle_webhook(request: Request, db: Session = Depends(get_db)):
     body = await request.body()
     signature = request.headers.get("paddle-signature", "")
