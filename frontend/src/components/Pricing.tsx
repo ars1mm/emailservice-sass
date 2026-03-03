@@ -97,15 +97,20 @@ function PricingCard({
           return
         }
 
+        // Generate a random test email for sandbox so each checkout is unique
+        const testEmail =
+          user?.email ||
+          `test${Math.random().toString(36).slice(2, 8)}@gmail.com`
+
         // Open inline overlay checkout with user context.
         // custom_data is forwarded to webhooks so the backend can
         // link the payment to the correct user.
         Paddle.Checkout.open({
           items: [{ priceId, quantity: 1 }],
-          customer: user?.email ? { email: user.email } : undefined,
+          customer: { email: testEmail },
           customData: {
             user_id: user?.id ?? '',
-            email: user?.email ?? '',
+            email: testEmail,
           },
         })
       } catch (error) {
