@@ -69,6 +69,9 @@ function PricingCard({
         try {
           (window as any).Paddle.Checkout.open({
             items: [{ priceId, quantity: 1 }],
+            settings: {
+              successUrl: 'https://emailservice-sass.vercel.app?success=true',
+            }
           })
         } catch (error) {
           console.error('Paddle checkout error:', error)
