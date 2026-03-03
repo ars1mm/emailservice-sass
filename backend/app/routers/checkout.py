@@ -33,6 +33,9 @@ async def create_checkout(request: CheckoutRequest):
         ],
         "customer": {
             "email": request.customer_email
+        },
+        "checkout": {
+            "url": "https://emailservice-sass.vercel.app?success=true"
         }
     }
     

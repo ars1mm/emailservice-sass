@@ -26,6 +26,7 @@ import { useState } from 'react'
 const MotionBox = motion(Box)
 
 const IS_TEST_MODE = process.env.NEXT_PUBLIC_TEST_MODE === 'true'
+console.log('TEST MODE:', IS_TEST_MODE, 'ENV:', process.env.NEXT_PUBLIC_TEST_MODE)
 
 // Map display plan names to API plan names
 const PLAN_MAP: Record<string, string> = {
@@ -64,6 +65,8 @@ function PricingCard({
       setLoading(true)
       const priceId = getPriceId(title)
       
+      console.log('Creating checkout for price:', priceId)
+      
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/checkout/create`, {
           method: 'POST',
@@ -72,10 +75,22 @@ function PricingCard({
         })
         
         const data = await response.json()
+        console.log('Checkout response:', data)
+        
         if (data.checkout_url) {
           window.location.href = data.checkout_url
+        } else {
+          const errorMsg = typeof data.detail === 'string' 
+            ? data.detail 
+            : JSON.stringify(data.detail || data)
+          toast({
+            title: 'Checkout Error',
+            description: errorMsg,
+            status: 'error',
+          })
         }
       } catch (error) {
+        console.error('Checkout error:', error)
         toast({
           title: 'Checkout Error',
           description: 'Failed to create checkout',
