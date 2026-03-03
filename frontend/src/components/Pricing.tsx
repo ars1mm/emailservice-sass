@@ -63,13 +63,27 @@ function PricingCard({
     if (IS_TEST_MODE) {
       // Test mode: Open Paddle Sandbox Checkout
       const priceId = getPriceId(title)
-      if (priceId) {
-        // @ts-ignore
-        window.Paddle?.Checkout.open({
-          items: [{ priceId, quantity: 1 }],
-          customer: {
-            email: 'test@example.com',
-          },
+      console.log('Opening Paddle checkout for:', title, 'Price ID:', priceId)
+      
+      if (priceId && typeof window !== 'undefined' && (window as any).Paddle) {
+        try {
+          (window as any).Paddle.Checkout.open({
+            items: [{ priceId, quantity: 1 }],
+          })
+        } catch (error) {
+          console.error('Paddle checkout error:', error)
+          toast({
+            title: 'Checkout Error',
+            description: 'Failed to open Paddle checkout. Check console.',
+            status: 'error',
+          })
+        }
+      } else {
+        console.error('Paddle not loaded or price ID missing')
+        toast({
+          title: 'Configuration Error',
+          description: 'Paddle checkout not available',
+          status: 'error',
         })
       }
     } else {
