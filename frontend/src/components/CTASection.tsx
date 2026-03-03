@@ -17,6 +17,7 @@ import { MdArrowForward, MdCheck } from 'react-icons/md'
 import { useRouter } from 'next/navigation'
 
 const MotionBox = motion(Box)
+const TEST_MODE = process.env.NEXT_PUBLIC_TEST_MODE === 'true'
 
 export default function CTASection() {
   const router = useRouter()
@@ -83,19 +84,18 @@ export default function CTASection() {
               <Button
                 size="lg"
                 colorScheme="blue"
-                rightIcon={<MdArrowForward />}
                 w="full"
                 h="60px"
                 fontSize="lg"
                 fontWeight="bold"
-                onClick={() => router.push('/register')}
+                onClick={() => window.location.href = '#pricing'}
                 _hover={{
                   transform: 'translateY(-2px)',
                   boxShadow: '0 20px 40px rgba(59, 130, 246, 0.4)'
                 }}
                 transition="all 0.3s"
               >
-                Get Started Free
+                View Pricing Plans
               </Button>
               
               <HStack spacing={3}>
@@ -112,17 +112,23 @@ export default function CTASection() {
             </VStack>
 
             <Text fontSize="sm" color="whiteAlpha.500" mt={4}>
-              Already have an account?{' '}
-              <Text
-                as="span"
-                color="blue.400"
-                fontWeight="bold"
-                cursor="pointer"
-                onClick={() => router.push('/login')}
-                _hover={{ textDecoration: 'underline' }}
-              >
-                Sign in
-              </Text>
+              {TEST_MODE ? (
+                'Demo Mode - Authentication disabled'
+              ) : (
+                <>
+                  Already have an account?{' '}
+                  <Text
+                    as="span"
+                    color="blue.400"
+                    fontWeight="bold"
+                    cursor="pointer"
+                    onClick={() => router.push('/login')}
+                    _hover={{ textDecoration: 'underline' }}
+                  >
+                    Sign in
+                  </Text>
+                </>
+              )}
             </Text>
           </VStack>
         </MotionBox>

@@ -23,6 +23,7 @@ import { siteConfig } from '@/config/site'
 import { MdEmail, MdMenu } from 'react-icons/md'
 
 const MotionBox = motion(Box)
+const TEST_MODE = process.env.NEXT_PUBLIC_TEST_MODE === 'true'
 
 export default function Navbar() {
   const bg = useColorModeValue('rgba(255, 255, 255, 0.05)', 'rgba(9, 9, 11, 0.6)')
@@ -77,41 +78,13 @@ export default function Navbar() {
           <HStack spacing={{ base: 2, md: 4 }} display={{ base: 'none', sm: 'flex' }}>
             <Button
               as="a"
-              href={`${siteConfig.dashboardUrl}/login`}
-              variant="ghost"
-              colorScheme="whiteAlpha"
-              size="sm"
-              borderRadius="full"
-              _hover={{ bg: 'whiteAlpha.200' }}
-            >
-              Sign In
-            </Button>
-            <Button
-              as="a"
-              href={`${siteConfig.dashboardUrl}/register`}
+              href="#pricing"
               colorScheme="brand"
               size="sm"
               borderRadius="full"
               px={{ base: 4, md: 6 }}
-              position="relative"
-              overflow="hidden"
-              sx={{
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: '-100%',
-                  w: '100%',
-                  h: '100%',
-                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
-                  transition: 'left 0.5s ease',
-                },
-                '&:hover::before': {
-                  left: '100%',
-                },
-              }}
             >
-              Get Started
+              View Pricing
             </Button>
           </HStack>
 
@@ -149,20 +122,11 @@ export default function Navbar() {
               ))}
               <Button
                 as="a"
-                href={`${siteConfig.dashboardUrl}/login`}
-                variant="outline"
-                colorScheme="whiteAlpha"
-                w="full"
-              >
-                Sign In
-              </Button>
-              <Button
-                as="a"
-                href={`${siteConfig.dashboardUrl}/register`}
+                href="#pricing"
                 colorScheme="brand"
                 w="full"
               >
-                Get Started
+                View Pricing
               </Button>
             </VStack>
           </DrawerBody>

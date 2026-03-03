@@ -15,18 +15,17 @@ async function createNotificationSetting() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      description: 'EmailShare Webhook',
+      description: 'EmailShare Production Webhook',
       destination: WEBHOOK_URL,
       active: true,
       subscribed_events: [
-        { name: 'subscription.created', enabled: true },
-        { name: 'subscription.updated', enabled: true },
-        { name: 'subscription.canceled', enabled: true },
-        { name: 'subscription.activated', enabled: true },
-        { name: 'subscription.past_due', enabled: true },
+        { name: 'subscription.created' },
+        { name: 'subscription.updated' },
+        { name: 'subscription.canceled' },
+        { name: 'subscription.activated' },
+        { name: 'subscription.past_due' },
       ],
       type: 'url',
-      api_version: 1,
     })
   });
 
