@@ -61,36 +61,30 @@ function PricingCard({
 
   const handleClick = async () => {
     if (IS_TEST_MODE) {
-      // Test mode: Open Paddle Sandbox Checkout
+      setLoading(true)
       const priceId = getPriceId(title)
-      console.log('Opening Paddle checkout for:', title, 'Price ID:', priceId)
       
-      if (priceId && typeof window !== 'undefined' && (window as any).Paddle) {
-        try {
-          (window as any).Paddle.Checkout.open({
-            items: [{ priceId, quantity: 1 }],
-            settings: {
-              successUrl: 'https://emailservice-sass.vercel.app?success=true',
-            }
-          })
-        } catch (error) {
-          console.error('Paddle checkout error:', error)
-          toast({
-            title: 'Checkout Error',
-            description: 'Failed to open Paddle checkout. Check console.',
-            status: 'error',
-          })
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/checkout/create`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ price_id: priceId })
+        })
+        
+        const data = await response.json()
+        if (data.checkout_url) {
+          window.location.href = data.checkout_url
         }
-      } else {
-        console.error('Paddle not loaded or price ID missing')
+      } catch (error) {
         toast({
-          title: 'Configuration Error',
-          description: 'Paddle checkout not available',
+          title: 'Checkout Error',
+          description: 'Failed to create checkout',
           status: 'error',
         })
+      } finally {
+        setLoading(false)
       }
     } else {
-      // Production: go to register
       window.location.href = `${siteConfig.dashboardUrl}/register`
     }
   }
