@@ -14,6 +14,8 @@ class UserOut(BaseModel):
     email: str
     name: str
     created_at: datetime
+    subscription_status: str = "inactive"
+    subscription_plan: str = "free"
 
     class Config:
         from_attributes = True

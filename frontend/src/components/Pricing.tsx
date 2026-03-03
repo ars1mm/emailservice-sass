@@ -12,13 +12,27 @@ import {
   Stack,
   Text,
   useColorModeValue,
+  useToast,
   VStack,
+  Badge,
 } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { MdCheckCircle } from 'react-icons/md'
 import { siteConfig } from '@/config/site'
+import { api } from '@/lib/api'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 const MotionBox = motion(Box)
+
+const IS_TEST_MODE = process.env.NEXT_PUBLIC_TEST_MODE === 'true'
+
+// Map display plan names to API plan names
+const PLAN_MAP: Record<string, string> = {
+  'Free': 'starter',
+  'Company': 'pro',
+  'Enterprise': 'enterprise',
+}
 
 interface PricingProps {
   title: string
@@ -41,6 +55,41 @@ function PricingCard({
 }: PricingProps) {
   const bg = useColorModeValue('whiteAlpha.50', 'whiteAlpha.50')
   const borderColor = isPopular ? 'brand.400' : useColorModeValue('whiteAlpha.200', 'whiteAlpha.200')
+  const router = useRouter()
+  const toast = useToast()
+  const [loading, setLoading] = useState(false)
+
+  const handleClick = async () => {
+    if (!IS_TEST_MODE) {
+      // Normal flow: go to register
+      window.location.href = `${siteConfig.dashboardUrl}/register`
+      return
+    }
+
+    // Test mode: instant checkout
+    setLoading(true)
+    try {
+      const plan = PLAN_MAP[title] || 'starter'
+      const { access_token } = await api.testCheckout(plan)
+      localStorage.setItem('token', access_token)
+      toast({
+        title: '🧪 Test checkout successful!',
+        description: `Activated "${plan}" plan for test user`,
+        status: 'success',
+        duration: 3000,
+      })
+      router.push('/dashboard')
+    } catch (err: any) {
+      toast({
+        title: 'Test checkout failed',
+        description: err.message,
+        status: 'error',
+        duration: 5000,
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <MotionBox
@@ -113,8 +162,8 @@ function PricingCard({
       </List>
 
       <Button
-        as="a"
-        href={`${siteConfig.dashboardUrl}/register`}
+        onClick={handleClick}
+        isLoading={loading}
         w="100%"
         size="lg"
         colorScheme={buttonVariant === 'solid' ? 'brand' : 'whiteAlpha'}
@@ -130,7 +179,7 @@ function PricingCard({
         }}
         transition="all 0.2s"
       >
-        {buttonText}
+        {IS_TEST_MODE ? `🧪 Test ${PLAN_MAP[title] || title}` : buttonText}
       </Button>
 
       {/* Decorative gradient blur */}
@@ -170,8 +219,20 @@ export default function Pricing() {
             Simple, transparent pricing
           </Heading>
           <Text fontSize="xl" color="whiteAlpha.600" maxW="2xl" mx="auto">
-            Choose the perfect plan for your team's needs.
+            Choose the perfect plan for your team&apos;s needs.
           </Text>
+          {IS_TEST_MODE && (
+            <Badge
+              colorScheme="yellow"
+              fontSize="md"
+              px={4}
+              py={2}
+              borderRadius="full"
+              variant="subtle"
+            >
+              🧪 TEST MODE — Click any plan to instantly activate
+            </Badge>
+          )}
         </VStack>
 
         <Stack
@@ -225,3 +286,4 @@ export default function Pricing() {
     </Box>
   )
 }
+

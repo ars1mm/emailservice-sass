@@ -13,19 +13,25 @@ import {
   Link as ChakraLink,
   useToast,
   Icon,
+  Badge,
+  Divider,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/auth'
+import { api } from '@/lib/api'
 import NextLink from 'next/link'
 import { MdEmail } from 'react-icons/md'
 import { siteConfig } from '@/config/site'
+
+const IS_TEST_MODE = process.env.NEXT_PUBLIC_TEST_MODE === 'true'
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [testLoading, setTestLoading] = useState(false)
   const { register } = useAuth()
   const router = useRouter()
   const toast = useToast()
@@ -40,6 +46,25 @@ export default function RegisterPage() {
       toast({ title: err.message, status: 'error' })
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleTestCheckout = async (plan: string) => {
+    setTestLoading(true)
+    try {
+      const { access_token } = await api.testCheckout(plan)
+      localStorage.setItem('token', access_token)
+      toast({
+        title: '🧪 Test checkout successful!',
+        description: `Activated "${plan}" plan for test user`,
+        status: 'success',
+        duration: 3000,
+      })
+      router.push('/dashboard')
+    } catch (err: any) {
+      toast({ title: err.message, status: 'error' })
+    } finally {
+      setTestLoading(false)
     }
   }
 
@@ -70,6 +95,41 @@ export default function RegisterPage() {
               {siteConfig.name}
             </Text>
           </VStack>
+
+          {/* Test Mode Quick Access */}
+          {IS_TEST_MODE && (
+            <Box
+              bg="rgba(255, 200, 0, 0.08)"
+              backdropFilter="blur(16px)"
+              p={{ base: 5, md: 6 }}
+              rounded="2xl"
+              border="1px solid"
+              borderColor="yellow.600"
+              w="full"
+            >
+              <VStack spacing={3}>
+                <Badge colorScheme="yellow" fontSize="sm" px={3} py={1} borderRadius="full">
+                  🧪 TEST MODE
+                </Badge>
+                <Text color="whiteAlpha.800" fontSize="sm" textAlign="center">
+                  Skip registration and instantly get a test account with an active subscription.
+                </Text>
+                <Button
+                  colorScheme="yellow"
+                  w="full"
+                  size="lg"
+                  isLoading={testLoading}
+                  onClick={() => handleTestCheckout('pro')}
+                >
+                  🚀 Skip — Activate Pro Plan
+                </Button>
+              </VStack>
+            </Box>
+          )}
+
+          {IS_TEST_MODE && (
+            <Divider borderColor="whiteAlpha.200" />
+          )}
 
           <Box 
             bg="rgba(255, 255, 255, 0.05)" 
@@ -154,3 +214,4 @@ export default function RegisterPage() {
     </Box>
   )
 }
+

@@ -44,6 +44,13 @@ export const api = {
     return request<any>('/auth/me')
   },
 
+  testCheckout(plan: string) {
+    return request<{ access_token: string }>('/auth/test-checkout', {
+      method: 'POST',
+      body: JSON.stringify({ plan }),
+    })
+  },
+
   // ── Teams ─────────────────────────────────────────────
   getTeams() {
     return request<any[]>('/teams/')
