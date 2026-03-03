@@ -18,6 +18,12 @@ services:
         sync: false
       - key: PADDLE_API_KEY
         sync: false
+      - key: PADDLE_STARTER_PRICE_ID
+        value: pri_01kjt2qqa46sf5p2fc6sty342d
+      - key: PADDLE_PRO_PRICE_ID
+        value: pri_01kjt2qqsf62xwzv64q0g662t3
+      - key: PADDLE_ENTERPRISE_PRICE_ID
+        value: pri_01kjt2qr8s86qv2c4vwt3m7h3j
 
   # Frontend
   - type: web
@@ -30,6 +36,12 @@ services:
     envVars:
       - key: NEXT_PUBLIC_API_URL
         value: https://emailshare-api.onrender.com
+      - key: NEXT_PUBLIC_PADDLE_STARTER_PRICE_ID
+        value: pri_01kjt2qqa46sf5p2fc6sty342d
+      - key: NEXT_PUBLIC_PADDLE_PRO_PRICE_ID
+        value: pri_01kjt2qqsf62xwzv64q0g662t3
+      - key: NEXT_PUBLIC_PADDLE_ENTERPRISE_PRICE_ID
+        value: pri_01kjt2qr8s86qv2c4vwt3m7h3j
 
 databases:
   - name: emailshare-db
