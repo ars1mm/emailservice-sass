@@ -58,15 +58,18 @@ async function main() {
   // List all services
   const services = await listServices();
   
-  // Get first service ID
-  if (services[0]?.service?.id) {
-    const serviceId = services[0].service.id;
-    
-    // Trigger deploy
+  // Find EmailShare service by name
+  const emailShareService = services.find(s => 
+    s.service?.name?.toLowerCase().includes('emailshare')
+  );
+  
+  if (emailShareService?.service?.id) {
+    const serviceId = emailShareService.service.id;
+    console.log('\nDeploying EmailShare service:', emailShareService.service.name);
     await deployService(serviceId);
-    
-    // Update env var
-    // await updateEnvVar(serviceId, 'PADDLE_WEBHOOK_SECRET', 'new_secret');
+  } else {
+    console.log('\n⚠️  EmailShare service not found. Available services:');
+    services.forEach(s => console.log(`  - ${s.service?.name}`));
   }
 }
 
