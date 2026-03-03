@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { MdStar, MdStarHalf } from 'react-icons/md'
 import Marquee from 'react-fast-marquee'
-
+// REMOVE HERE
 const reviews = [
   {
     name: 'Sarah Jenkins',
