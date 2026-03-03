@@ -41,7 +41,7 @@ class User(Base):
     # Paddle / Subscription fields
     paddle_customer_id = Column(String, nullable=True)
     paddle_subscription_id = Column(String, nullable=True)
-    subscription_status = Column(String, default="inactive")  # inactive | active | trialing | canceled
+    subscription_status = Column(String, default="inactive")  # inactive | active | trialing | past_due | canceled
     subscription_plan = Column(String, default="free")  # free | starter | pro | enterprise
 
     teams = relationship("Team", secondary=team_members, back_populates="members")

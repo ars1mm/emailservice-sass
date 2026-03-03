@@ -9,6 +9,13 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
     TEST_MODE: bool = False
 
+    # Paddle
+    PADDLE_API_KEY: str = ""
+    PADDLE_WEBHOOK_SECRET: str = ""
+    PADDLE_STARTER_PRICE_ID: str = ""
+    PADDLE_PRO_PRICE_ID: str = ""
+    PADDLE_ENTERPRISE_PRICE_ID: str = ""
+
     class Config:
         env_file = ".env"
 

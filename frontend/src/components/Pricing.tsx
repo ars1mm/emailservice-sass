@@ -20,6 +20,7 @@ import { motion } from 'framer-motion'
 import { MdCheckCircle } from 'react-icons/md'
 import { siteConfig } from '@/config/site'
 import { api } from '@/lib/api'
+import { useAuth } from '@/lib/auth'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -58,42 +59,53 @@ function PricingCard({
   const borderColor = isPopular ? 'brand.400' : useColorModeValue('whiteAlpha.200', 'whiteAlpha.200')
   const router = useRouter()
   const toast = useToast()
+  const { user } = useAuth()
   const [loading, setLoading] = useState(false)
 
   const handleClick = async () => {
     if (IS_TEST_MODE) {
       setLoading(true)
       const priceId = getPriceId(title)
-      
-      console.log('Creating checkout for price:', priceId)
-      
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/checkout/create`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ price_id: priceId })
+
+      if (!priceId) {
+        toast({
+          title: 'Configuration Error',
+          description: 'Price ID not configured for this plan.',
+          status: 'error',
         })
-        
-        const data = await response.json()
-        console.log('Checkout response:', data)
-        
-        if (data.checkout_url) {
-          window.location.href = data.checkout_url
-        } else {
-          const errorMsg = typeof data.detail === 'string' 
-            ? data.detail 
-            : JSON.stringify(data.detail || data)
+        setLoading(false)
+        return
+      }
+
+      console.log('Creating checkout for price:', priceId)
+
+      try {
+        const Paddle = (window as any).Paddle
+        if (!Paddle) {
           toast({
             title: 'Checkout Error',
-            description: errorMsg,
+            description: 'Paddle is not loaded yet. Please try again.',
             status: 'error',
           })
+          return
         }
+
+        // Open inline overlay checkout with user context.
+        // custom_data is forwarded to webhooks so the backend can
+        // link the payment to the correct user.
+        Paddle.Checkout.open({
+          items: [{ priceId, quantity: 1 }],
+          customer: user?.email ? { email: user.email } : undefined,
+          customData: {
+            user_id: user?.id ?? '',
+            email: user?.email ?? '',
+          },
+        })
       } catch (error) {
         console.error('Checkout error:', error)
         toast({
           title: 'Checkout Error',
-          description: 'Failed to create checkout',
+          description: 'Failed to open checkout',
           status: 'error',
         })
       } finally {
