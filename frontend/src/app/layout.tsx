@@ -16,21 +16,23 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const paddleEnv = process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT || 'sandbox'
-  const paddleToken = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN || 'test_'
-  
   return (
     <html lang="en" className={outfit.variable}>
       <head>
         <script
           src="https://cdn.paddle.com/paddle/v2/paddle.js"
+          async
+        />
+        <script
           dangerouslySetInnerHTML={{
             __html: `
-              window.Paddle = window.Paddle || {};
-              Paddle.Environment = { set: function(env) { this.environment = env; } };
-              Paddle.Initialize({ 
-                environment: '${paddleEnv}',
-                token: '${paddleToken}'
+              window.addEventListener('load', function() {
+                if (window.Paddle) {
+                  Paddle.Environment.set('sandbox');
+                  Paddle.Initialize({
+                    token: 'test_5702b395030261316e4e39a2234'
+                  });
+                }
               });
             `
           }}
