@@ -27,13 +27,18 @@ import { useState } from 'react'
 const MotionBox = motion(Box)
 
 const IS_TEST_MODE = process.env.NEXT_PUBLIC_TEST_MODE === 'true'
-console.log('TEST MODE:', IS_TEST_MODE, 'ENV:', process.env.NEXT_PUBLIC_TEST_MODE)
+console.log(
+  'TEST MODE:',
+  IS_TEST_MODE,
+  'ENV:',
+  process.env.NEXT_PUBLIC_TEST_MODE
+)
 
 // Map display plan names to API plan names
 const PLAN_MAP: Record<string, string> = {
-  'Free': 'starter',
-  'Company': 'pro',
-  'Enterprise': 'enterprise',
+  Free: 'starter',
+  Company: 'pro',
+  Enterprise: 'enterprise',
 }
 
 interface PricingProps {
@@ -56,7 +61,9 @@ function PricingCard({
   buttonVariant,
 }: PricingProps) {
   const bg = useColorModeValue('whiteAlpha.50', 'whiteAlpha.50')
-  const borderColor = isPopular ? 'brand.400' : useColorModeValue('whiteAlpha.200', 'whiteAlpha.200')
+  const borderColor = isPopular
+    ? 'brand.400'
+    : useColorModeValue('whiteAlpha.200', 'whiteAlpha.200')
   const router = useRouter()
   const toast = useToast()
   const { user } = useAuth()
@@ -118,9 +125,9 @@ function PricingCard({
 
   const getPriceId = (planTitle: string) => {
     const priceIds: Record<string, string> = {
-      'Free': process.env.NEXT_PUBLIC_PADDLE_STARTER_PRICE_ID || '',
-      'Company': process.env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID || '',
-      'Enterprise': process.env.NEXT_PUBLIC_PADDLE_ENTERPRISE_PRICE_ID || '',
+      Free: process.env.NEXT_PUBLIC_PADDLE_STARTER_PRICE_ID || '',
+      Company: process.env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID || '',
+      Enterprise: process.env.NEXT_PUBLIC_PADDLE_ENTERPRISE_PRICE_ID || '',
     }
     return priceIds[planTitle]
   }
@@ -143,17 +150,25 @@ function PricingCard({
       position="relative"
       border="1px solid"
       borderColor={borderColor}
-      boxShadow={isPopular ? '0 0 30px rgba(0, 138, 255, 0.2)' : '0 4px 6px rgba(0,0,0,0.1)'}
+      boxShadow={
+        isPopular
+          ? '0 0 30px rgba(0, 138, 255, 0.2)'
+          : '0 4px 6px rgba(0,0,0,0.1)'
+      }
       overflow="hidden"
-      _before={isPopular ? {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '4px',
-        bg: 'brand.400'
-      } : {}}
+      _before={
+        isPopular
+          ? {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              bg: 'brand.400',
+            }
+          : {}
+      }
     >
       {isPopular && (
         <Box
@@ -181,7 +196,11 @@ function PricingCard({
           <Text fontSize="5xl" fontWeight="extrabold" lineHeight="1">
             {price}
           </Text>
-          {price !== 'Custom' && <Text fontSize="lg" color="whiteAlpha.500" ml={2}>/month</Text>}
+          {price !== 'Custom' && (
+            <Text fontSize="lg" color="whiteAlpha.500" ml={2}>
+              /month
+            </Text>
+          )}
         </Flex>
         <Text color="whiteAlpha.600">{description}</Text>
       </VStack>
@@ -189,7 +208,15 @@ function PricingCard({
       <List spacing={4} mb={8} flex="1">
         {features.map((feature, index) => (
           <ListItem key={index} display="flex" alignItems="flex-start">
-            <Icon as={MdCheckCircle} color="brand.400" mt={1} mr={3} w={5} h={5} flexShrink={0} />
+            <Icon
+              as={MdCheckCircle}
+              color="brand.400"
+              mt={1}
+              mr={3}
+              w={5}
+              h={5}
+              flexShrink={0}
+            />
             <Text color="whiteAlpha.800">{feature}</Text>
           </ListItem>
         ))}
@@ -203,13 +230,18 @@ function PricingCard({
         colorScheme={buttonVariant === 'solid' ? 'brand' : 'whiteAlpha'}
         variant={buttonVariant}
         color={buttonVariant === 'outline' ? 'white' : 'white'}
-        borderColor={buttonVariant === 'outline' ? 'whiteAlpha.400' : 'transparent'}
+        borderColor={
+          buttonVariant === 'outline' ? 'whiteAlpha.400' : 'transparent'
+        }
         borderRadius="full"
         mt="auto"
         _hover={{
           bg: buttonVariant === 'outline' ? 'whiteAlpha.100' : 'brand.400',
           transform: 'translateY(-2px)',
-          boxShadow: buttonVariant === 'solid' ? '0 10px 20px rgba(0, 138, 255, 0.3)' : 'none',
+          boxShadow:
+            buttonVariant === 'solid'
+              ? '0 10px 20px rgba(0, 138, 255, 0.3)'
+              : 'none',
         }}
         transition="all 0.2s"
       >
@@ -320,4 +352,3 @@ export default function Pricing() {
     </Box>
   )
 }
-
