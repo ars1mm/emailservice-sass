@@ -18,40 +18,7 @@ class CheckoutRequest(BaseModel):
 async def create_checkout(request: CheckoutRequest):
     """Create a Paddle checkout session and return the URL"""
     
-    headers = {
-        "Authorization": f"Bearer {PADDLE_API_KEY}",
-        "Content-Type": "application/json",
-        "Paddle-Version": "1"
-    }
-    
-    payload = {
-        "items": [
-            {
-                "price_id": request.price_id,
-                "quantity": 1
-            }
-        ],
-        "customer": {
-            "email": request.customer_email
-        }
-    }
-    
-    response = requests.post(
-        f"{PADDLE_API_URL}/transactions",
-        headers=headers,
-        json=payload
-    )
-    
-    if response.status_code != 200:
-        raise HTTPException(
-            status_code=response.status_code,
-            detail=response.json()
-        )
-    
-    data = response.json()
-    checkout_url = data.get("data", {}).get("checkout", {}).get("url")
-    
-    if not checkout_url:
-        raise HTTPException(status_code=500, detail="Failed to get checkout URL")
+    # Generate Paddle Checkout URL for sandbox
+    checkout_url = f"https://sandbox-buy.paddle.com/checkout/custom/{request.price_id}?guest_email={request.customer_email}"
     
     return {"checkout_url": checkout_url}
