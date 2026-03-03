@@ -60,35 +60,31 @@ function PricingCard({
   const [loading, setLoading] = useState(false)
 
   const handleClick = async () => {
-    if (!IS_TEST_MODE) {
-      // Normal flow: go to register
+    if (IS_TEST_MODE) {
+      // Test mode: Open Paddle Sandbox Checkout
+      const priceId = getPriceId(title)
+      if (priceId) {
+        // @ts-ignore
+        window.Paddle?.Checkout.open({
+          items: [{ priceId, quantity: 1 }],
+          customer: {
+            email: 'test@example.com',
+          },
+        })
+      }
+    } else {
+      // Production: go to register
       window.location.href = `${siteConfig.dashboardUrl}/register`
-      return
     }
+  }
 
-    // Test mode: instant checkout
-    setLoading(true)
-    try {
-      const plan = PLAN_MAP[title] || 'starter'
-      const { access_token } = await api.testCheckout(plan)
-      localStorage.setItem('token', access_token)
-      toast({
-        title: '🧪 Test checkout successful!',
-        description: `Activated "${plan}" plan for test user`,
-        status: 'success',
-        duration: 3000,
-      })
-      router.push('/dashboard')
-    } catch (err: any) {
-      toast({
-        title: 'Test checkout failed',
-        description: err.message,
-        status: 'error',
-        duration: 5000,
-      })
-    } finally {
-      setLoading(false)
+  const getPriceId = (planTitle: string) => {
+    const priceIds: Record<string, string> = {
+      'Free': process.env.NEXT_PUBLIC_PADDLE_STARTER_PRICE_ID || '',
+      'Company': process.env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID || '',
+      'Enterprise': process.env.NEXT_PUBLIC_PADDLE_ENTERPRISE_PRICE_ID || '',
     }
+    return priceIds[planTitle]
   }
 
   return (

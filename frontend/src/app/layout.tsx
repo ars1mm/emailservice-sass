@@ -18,6 +18,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={outfit.variable}>
+      <head>
+        <script
+          src="https://cdn.paddle.com/paddle/v2/paddle.js"
+          data-environment="sandbox"
+          data-client-token="test_"
+        />
+      </head>
       <body style={{ backgroundColor: '#09090b', color: '#ededed' }}>
         <Providers>
           <Navbar />
