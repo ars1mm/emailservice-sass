@@ -87,8 +87,13 @@ async def paddle_webhook(request: Request, db: Session = Depends(get_db)):
     body = await request.body()
     signature = request.headers.get("paddle-signature", "")
 
-    if settings.PADDLE_WEBHOOK_SECRET and not verify_paddle_webhook(body, signature):
-        raise HTTPException(status_code=401, detail="Invalid webhook signature")
+    # Only verify signature if webhook secret is configured
+    if settings.PADDLE_WEBHOOK_SECRET:
+        if not verify_paddle_webhook(body, signature):
+            logger.warning("Invalid webhook signature")
+            raise HTTPException(status_code=401, detail="Invalid webhook signature")
+    else:
+        logger.warning("Webhook signature verification skipped - PADDLE_WEBHOOK_SECRET not set")
 
     event = json.loads(body)
     event_type = event.get("event_type", "")
